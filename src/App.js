@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { TeamOutlined, KeyOutlined, ToolOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Menu, Switch } from 'antd';
+import { Menu } from 'antd';
+import UserForm from './components/create_user_info';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -9,7 +11,7 @@ const items: MenuItem[] = [
     {
         key: 'sub1',
         label: '인증 관리 인터페이스',
-        icon: <MailOutlined />,
+        icon: <KeyOutlined />,
         children: [
             { key: '1', label: 'Option 1' },
             { key: '2', label: 'Option 2' },
@@ -20,9 +22,9 @@ const items: MenuItem[] = [
     {
         key: 'sub2',
         label: '사용자 관리 인터페이스',
-        icon: <AppstoreOutlined />,
+        icon: <TeamOutlined />,
         children: [
-            { key: '5', label: 'Option 5' },
+            { key: '5', label: <Link to="/user-form">정보 생성</Link> },
             { key: '6', label: 'Option 6' },
             {
                 key: 'sub3',
@@ -37,7 +39,7 @@ const items: MenuItem[] = [
     {
         key: 'sub4',
         label: '장치 관리 인터페이스',
-        icon: <SettingOutlined />,
+        icon: <ToolOutlined />,
         children: [
             { key: '9', label: 'Option 9' },
             { key: '10', label: 'Option 10' },
@@ -48,28 +50,30 @@ const items: MenuItem[] = [
 ];
 
 const App: React.FC = () => {
-
     const [current, setCurrent] = useState('1');
 
     const onClick: MenuProps['onClick'] = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
+
     };
 
     return (
-        <>
-
-            <br />
-            <br />
-            <Menu
-                onClick={onClick}
-                style={{ width: 256 }}
-                defaultOpenKeys={['sub1']}
-                selectedKeys={[current]}
-                mode="inline"
-                items={items}
-            />
-        </>
+        <Router>
+            <div style={{ display: 'flex' }}>
+                <Menu
+                    onClick={onClick}
+                    style={{ width: 256 }}
+                    defaultOpenKeys={['sub1']}
+                    selectedKeys={[current]}
+                    mode="inline"
+                    items={items}
+                />
+                <Routes>
+                    <Route path="/user-form" element={<UserForm />} />
+                </Routes>
+            </div>
+        </Router>
     );
 };
 
