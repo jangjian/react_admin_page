@@ -1,25 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Menu, Switch } from 'antd';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+type MenuItem = Required<MenuProps>['items'][number];
+
+const items: MenuItem[] = [
+    {
+        key: 'sub1',
+        label: '인증 관리 인터페이스',
+        icon: <MailOutlined />,
+        children: [
+            { key: '1', label: 'Option 1' },
+            { key: '2', label: 'Option 2' },
+            { key: '3', label: 'Option 3' },
+            { key: '4', label: 'Option 4' },
+        ],
+    },
+    {
+        key: 'sub2',
+        label: '사용자 관리 인터페이스',
+        icon: <AppstoreOutlined />,
+        children: [
+            { key: '5', label: 'Option 5' },
+            { key: '6', label: 'Option 6' },
+            {
+                key: 'sub3',
+                label: 'Submenu',
+                children: [
+                    { key: '7', label: 'Option 7' },
+                    { key: '8', label: 'Option 8' },
+                ],
+            },
+        ],
+    },
+    {
+        key: 'sub4',
+        label: '장치 관리 인터페이스',
+        icon: <SettingOutlined />,
+        children: [
+            { key: '9', label: 'Option 9' },
+            { key: '10', label: 'Option 10' },
+            { key: '11', label: 'Option 11' },
+            { key: '12', label: 'Option 12' },
+        ],
+    },
+];
+
+const App: React.FC = () => {
+
+    const [current, setCurrent] = useState('1');
+
+    const onClick: MenuProps['onClick'] = (e) => {
+        console.log('click ', e);
+        setCurrent(e.key);
+    };
+
+    return (
+        <>
+
+            <br />
+            <br />
+            <Menu
+                onClick={onClick}
+                style={{ width: 256 }}
+                defaultOpenKeys={['sub1']}
+                selectedKeys={[current]}
+                mode="inline"
+                items={items}
+            />
+        </>
+    );
+};
 
 export default App;
